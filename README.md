@@ -8,7 +8,7 @@ The repository includes both a requirements.txt and a environment.yml file for i
 
 ## Trained models
 - The trained Mask2Former and Mask R-CNN models are included in the repository to use for your own redaction detection.
-- If you want to re-train the models of this paper you will need the [Swin-T model trained on COCO] from the Mask2Former modell zoo and the [Mask R-CNN ResNext] model from the Detectron2 model zoo. Both of these models can be downloaded by running the `download_detectron_models.sh` script in the root folder of the directory, which will create the `pretrained_models` directory in this repository.
+- If you want to re-train the models of this paper you will need the [Swin-T model trained on COCO] from the Mask2Former modell zoo and the [Mask R-CNN ResNext] model from the Detectron2 model zoo. Both of these models can be downloaded by running the `download_mask2former_model.sh` script in the root folder of the directory, which will create the `pretrained_models` directory in this repository.
 
 ### Training
 To train the Mask2Former and Mask R-CNN models, the training scripts from Detectron2 and Mask2Former have been adapted for our dataset, and can be run using the following commands.
