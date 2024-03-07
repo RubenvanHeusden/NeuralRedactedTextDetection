@@ -1,5 +1,6 @@
 # NeuralRedactedTextDetection
 
+![repo_example](https://github.com/RubenvanHeusden/NeuralRedactedTextDetection/blob/main/repo_example.png?raw=true)
 This repository contains the code and experiments associated with the paper "Redacted Text Detection Using Neural Image Segmentation
 Methods", currently under submission at the International Journal of Document Analysis and Recognition (IJDAR).
 
