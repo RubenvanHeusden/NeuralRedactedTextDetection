@@ -16,7 +16,7 @@ training_scripts
 │      └─── maskrcnn_train_net.py
 │
 model_outputs
-│      └─── rulebased
+│      └─── Morphology
 │      └─── Mask-RCNN
 │      └─── Mask2Former
 │
