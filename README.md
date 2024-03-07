@@ -40,6 +40,20 @@ This repository uses the [Mask2Former](https://github.com/facebookresearch/Mask2
 - The trained Mask2Former and Mask R-CNN models are included in the repository to use for your own redaction detection.
 - If you want to re-train the models of this paper you will need the [Swin-T model trained on COCO] from the Mask2Former model zoo and the [Mask R-CNN ResNext] model from the Detectron2 model zoo. Both of these models can be downloaded by running the `download_mask2former_model.sh` script in the root folder of the directory, which will create the `pretrained_models` directory in this repository, so that they are in the correct place for the config files.
 
+  To train the Mask2Former model, you can run the following command from the `training_scripts` folders
+```
+python mask2former_train_net.py \
+--config-file ../model_configs/maskformer2_swin_tiny_bs16_50ep.yaml \
+  --num-gpus 1 SOLVER.IMS_PER_BATCH 1 SOLVER.BASE_LR 0.0001 SOLVER.MAX_ITER 5000 OUTPUT_DIR ../Mask2FormerOutput \
+  DATALOADER.FILTER_EMPTY_ANNOTATIONS False
+```
+To train the Mask RCNN folder, use the following command:
+```
+python maskrcnn_train_net.py \
+--config-file ../model_configs/mask_rcnn_X_101_32x8d_FPN_3x.yaml \
+  --num-gpus 1 SOLVER.IMS_PER_BATCH 1 SOLVER.BASE_LR 0.0001 SOLVER.MAX_ITER 5000 OUTPUT_DIR ../Mask2FormerOutput \
+  DATALOADER.FILTER_EMPTY_ANNOTATIONS False
+```
 
 ## Data
 The dataset is encoded in the standard COCO format, with train and test folders containing the images and a JSON file in the COCO annotation style. Please note that although the Mask2Former library works with RLE masks of the annotations, the Detectron2 library does not, and therefore we have included annotations in both formats, with instructions of how to run everything for both models. 
