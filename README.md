@@ -55,6 +55,7 @@ python maskrcnn_train_net.py \
   DATALOADER.FILTER_EMPTY_ANNOTATIONS False
 ```
 
-## Data
+## Data & Models
 The dataset is encoded in the standard COCO format, with train and test folders containing the images and a JSON file in the COCO annotation style. Please note that although the Mask2Former library works with RLE masks of the annotations, the Detectron2 library does not, and therefore we have included annotations in both formats, with instructions of how to run everything for both models. 
 
+Both the dataset as well as the trained models and the model outputs can be downloaded through Zenodo on the following link: [INSERT LINK]
