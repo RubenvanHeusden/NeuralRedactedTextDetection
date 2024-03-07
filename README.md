@@ -7,18 +7,26 @@ Methods", currently under submission at the International Journal of Document An
 ## Directory Structure
 
 ```
-dataset
+model configs
+│      └─── detectron2_configs
+│      └─── mask2former_configs
 │
-└───train
-│      │   classic_train.json
-│      │   extended_train.json
-│      └── images
-│    
+training_scripts
+│      └─── mask2former_train_net.py
+│      └─── maskrcnn_train_net.py
 │
-└───test
-      │   classic_test.json
-      │   extended_test.json
-      └── images
+model_outputs
+│      └─── rulebased
+│      └─── Mask-RCNN
+│      └─── Mask2Former
+│
+notebooks
+│      └─── DatasetExploration.ipynb
+│      └─── EdactRayOnScansBaseline.ipynb
+│      └─── NeuralModelExperiments.ipynb
+│      └─── OCRandMorphologyBaseline.ipynb
+│      └─── evaluation.py
+│      └─── utils.py
 ```
 
 ## Installation
