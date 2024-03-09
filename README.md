@@ -52,7 +52,8 @@ To train the Mask RCNN folder, use the following command:
 python maskrcnn_train_net.py \
 --config-file ../model_configs/mask_rcnn_X_101_32x8d_FPN_3x.yaml \
   --num-gpus 1 SOLVER.IMS_PER_BATCH 1 SOLVER.BASE_LR 0.0001 SOLVER.MAX_ITER 5000 OUTPUT_DIR ../Mask2FormerOutput \
-  DATALOADER.FILTER_EMPTY_ANNOTATIONS False  DATASETS.TRAIN '("classic_train",)'  DATASETS.TEST'("classic_test",)'
+  DATALOADER.FILTER_EMPTY_ANNOTATIONS False  DATASETS.TRAIN '("classic_train",)'  DATASETS.TEST'("classic_test",)' \
+MODEL.WEIGHTS ../resources/model_binaries/pretrained/model_final_86143f.pkl
 ```
 
 For both the training scripts, the datasets you want to use for training can be given to the models as shown above. 
