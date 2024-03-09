@@ -45,15 +45,25 @@ This repository uses the [Mask2Former](https://github.com/facebookresearch/Mask2
 python mask2former_train_net.py \
 --config-file ../model_configs/maskformer2_swin_tiny_bs16_50ep.yaml \
   --num-gpus 1 SOLVER.IMS_PER_BATCH 1 SOLVER.BASE_LR 0.0001 SOLVER.MAX_ITER 5000 OUTPUT_DIR ../Mask2FormerOutput \
-  DATALOADER.FILTER_EMPTY_ANNOTATIONS False
+  DATALOADER.FILTER_EMPTY_ANNOTATIONS False DATASETS.TRAIN '("classic_train",)'  DATASETS.TEST'("classic_test",)'
 ```
 To train the Mask RCNN folder, use the following command:
 ```
 python maskrcnn_train_net.py \
 --config-file ../model_configs/mask_rcnn_X_101_32x8d_FPN_3x.yaml \
   --num-gpus 1 SOLVER.IMS_PER_BATCH 1 SOLVER.BASE_LR 0.0001 SOLVER.MAX_ITER 5000 OUTPUT_DIR ../Mask2FormerOutput \
-  DATALOADER.FILTER_EMPTY_ANNOTATIONS False
+  DATALOADER.FILTER_EMPTY_ANNOTATIONS False  DATASETS.TRAIN '("classic_train",)'  DATASETS.TEST'("classic_test",)'
 ```
+
+For both the training scripts, the datasets you want to use for training can be given to the models as shown above. 
+They can also be specified in the config file itself, but this makes changes it for different runs more involved. 
+For the experiments, the following datasets have been registered in the Detectron2 library, and can be used as train 
+and test dataset:
+- classic_train, classic_test
+- extended_train, extended_test
+- train10, train20, train40, train60, train80
+
+
 
 ## Data & Models
 The dataset is encoded in the standard COCO format, with train and test folders containing the images and a JSON file in the COCO annotation style. Please note that although the Mask2Former library works with RLE masks of the annotations, the Detectron2 library does not, and therefore we have included annotations in both formats, with instructions of how to run everything for both models. 
