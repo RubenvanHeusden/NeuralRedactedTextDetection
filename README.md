@@ -55,6 +55,8 @@ python maskrcnn_train_net.py \
   DATALOADER.FILTER_EMPTY_ANNOTATIONS False  DATASETS.TRAIN '("classic_train",)'  DATASETS.TEST '("classic_test",)' \
 MODEL.WEIGHTS ../resources/model_binaries/pretrained/model_final_86143f.pkl
 ```
+If you don't have a GPU you can still train the model, but you will have to remove the `--num-gpus` command and specify
+`MODEL.DEVICE "cpu"`.
 
 For both the training scripts, the datasets you want to use for training can be given to the models as shown above. 
 They can also be specified in the config file itself, but this makes changes it for different runs more involved. 
