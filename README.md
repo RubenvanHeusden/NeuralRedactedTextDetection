@@ -46,14 +46,14 @@ python mask2former_train_net.py \
 --config-file ../model_configs/mask2former_configs/maskformer2_swin_tiny_bs16_50ep.yaml \
   --num-gpus 1 SOLVER.IMS_PER_BATCH 1 SOLVER.BASE_LR 0.0001 SOLVER.MAX_ITER 5000 OUTPUT_DIR ../Mask2FormerOutput \
   DATALOADER.FILTER_EMPTY_ANNOTATIONS False DATASETS.TRAIN '("classic_train",)'  DATASETS.TEST'("classic_test",)'
+MODEL.WEIGHTS ../resources/model_binaries/pretrained/model_final_86143f.pkl
 ```
 To train the Mask RCNN folder, use the following command:
 ```
 python maskrcnn_train_net.py \
 --config-file ../model_configs/maskrcnn_configs/mask_rcnn_X_101_32x8d_FPN_3x.yaml \
-  --num-gpus 1 SOLVER.IMS_PER_BATCH 1 SOLVER.BASE_LR 0.0001 SOLVER.MAX_ITER 5000 OUTPUT_DIR ../Mask2FormerOutput \
-  DATALOADER.FILTER_EMPTY_ANNOTATIONS False  DATASETS.TRAIN '("classic_train",)'  DATASETS.TEST '("classic_test",)' \
-MODEL.WEIGHTS ../resources/model_binaries/pretrained/model_final_86143f.pkl
+  SOLVER.IMS_PER_BATCH 1 SOLVER.BASE_LR 0.0001 SOLVER.MAX_ITER 5000 OUTPUT_DIR ../MaskRCNNOutput \
+  DATALOADER.FILTER_EMPTY_ANNOTATIONS False DATASETS.TRAIN '("classic_train",)'  DATASETS.TEST '("classic_test",)'
 ```
 If you don't have a GPU you can still train the model, but you will have to remove the `--num-gpus` command and specify
 `MODEL.DEVICE "cpu"`.
