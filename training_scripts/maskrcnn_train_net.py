@@ -24,7 +24,13 @@ import detectron2.utils.comm as comm
 from detectron2.checkpoint import DetectionCheckpointer
 from detectron2.config import get_cfg
 from detectron2.data import MetadataCatalog
-from detectron2.engine import DefaultTrainer, default_setup, hooks, launch
+from detectron2.engine import (
+    default_argument_parser,
+    default_setup,
+    DefaultTrainer,
+    hooks,
+    launch,
+)
 from detectron2.evaluation import (
     CityscapesInstanceEvaluator,
     CityscapesSemSegEvaluator,
@@ -37,98 +43,9 @@ from detectron2.evaluation import (
     verify_results,
 )
 from detectron2.modeling import GeneralizedRCNNWithTTA
-from detectron2.data.datasets import register_coco_instances
 
-# We slightly redefine the argument parse of detectron2 to make it a bit easier to specify different 
-# datasets via the command line, and to automatically set the right paths for the dataset jsons for 
-# the registering of the coco_instances.
-
-def custom_argument_parser(epilog=None):
-    """
-    Create a parser with some common arguments used by detectron2 users.
-
-    Args:
-        epilog (str): epilog passed to ArgumentParser describing the usage.
-
-    Returns:
-        argparse.ArgumentParser:
-    """
-    parser = argparse.ArgumentParser(
-        epilog=epilog
-        or f"""
-Examples:
-
-Run on single machine:
-    $ {sys.argv[0]} --num-gpus 8 --config-file cfg.yaml
-
-Change some config options:
-    $ {sys.argv[0]} --config-file cfg.yaml MODEL.WEIGHTS /path/to/weight.pth SOLVER.BASE_LR 0.001
-
-Run on multiple machines:
-    (machine0)$ {sys.argv[0]} --machine-rank 0 --num-machines 2 --dist-url <URL> [--other-flags]
-    (machine1)$ {sys.argv[0]} --machine-rank 1 --num-machines 2 --dist-url <URL> [--other-flags]
-""",
-        formatter_class=argparse.RawDescriptionHelpFormatter,
-    )
-    parser.add_argument("--config-file", default="", metavar="FILE", help="path to config file")
-    parser.add_argument(
-        "--resume",
-        action="store_true",
-        help="Whether to attempt to resume from the checkpoint directory. "
-        "See documentation of `DefaultTrainer.resume_or_load()` for what it means.",
-    )
-    # Add our custom arguments here
-    parser.add_argument
-
-    parser.add_argument("--eval-only", action="store_true", help="perform evaluation only")
-    parser.add_argument("--num-gpus", type=int, default=1, help="number of gpus *per machine*")
-    parser.add_argument("--num-machines", type=int, default=1, help="total number of machines")
-    parser.add_argument(
-        "--machine-rank", type=int, default=0, help="the rank of this machine (unique per machine)"
-    )
-
-    # PyTorch still may leave orphan processes in multi-gpu training.
-    # Therefore we use a deterministic way to obtain port,
-    # so that users are aware of orphan processes by seeing the port occupied.
-    port = 2**15 + 2**14 + hash(os.getuid() if sys.platform != "win32" else 1) % 2**14
-    parser.add_argument(
-        "--dist-url",
-        default="tcp://127.0.0.1:{}".format(port),
-        help="initialization URL for pytorch distributed backend. See "
-        "https://pytorch.org/docs/stable/distributed.html for details.",
-    )
-    parser.add_argument(
-        "opts",
-        help="""
-Modify config options at the end of the command. For Yacs configs, use
-space-separated "PATH.KEY VALUE" pairs.
-For python-based LazyConfig, use "path.key=value".
-        """.strip(),
-        default=None,
-        nargs=argparse.REMAINDER,
-    )
-    return parser
-
-print(so.getcwd())
-
-# We register the datasets below so that we can use them in the various training scripts.
-register_coco_instances("classic_train", {}, "/ivi/ilps/personal/rheusde/RedactedTextDetection/Redacted-Text-Detection/Mask2Former/datasets/classic_train.json", "/ivi/ilps/personal/rheusde/RedactedTextDetection/Redacted-Text-Detection/Mask2Former/datasets/train")
-register_coco_instances("classic_test", {}, "/ivi/ilps/personal/rheusde/RedactedTextDetection/Redacted-Text-Detection/Mask2Former/datasets/classic_test.json", "/ivi/ilps/personal/rheusde/RedactedTextDetection/Redacted-Text-Detection/Mask2Former/datasets/test")
-
-# Also add the extended scripts
-register_coco_instances("extended_train", {}, "/ivi/ilps/personal/rheusde/RedactedTextDetection/Redacted-Text-Detection/Mask2Former/datasets/extended_train.json", "/ivi/ilps/personal/rheusde/RedactedTextDetection/Redacted-Text-Detection/Mask2Former/datasets/extended_train")
-register_coco_instances("extended_test", {}, "/ivi/ilps/personal/rheusde/RedactedTextDetection/Redacted-Text-Detection/Mask2Former/datasets/extended_test.json", "/ivi/ilps/personal/rheusde/RedactedTextDetection/Redacted-Text-Detection/Mask2Former/datasets/extended_test")
-
-# Also register the different splits we use for the training data variance experiment
-register_coco_instances("train_10", {}, "/ivi/ilps/personal/rheusde/RedactedTextDetection/Redacted-Text-Detection/Mask2Former/datasets/train_10.json", "/ivi/ilps/personal/rheusde/RedactedTextDetection/Redacted-Text-Detection/Mask2Former/datasets/extended_train")
-
-register_coco_instances("train_20", {}, "/ivi/ilps/personal/rheusde/RedactedTextDetection/Redacted-Text-Detection/Mask2Former/datasets/train_20.json", "/ivi/ilps/personal/rheusde/RedactedTextDetection/Redacted-Text-Detection/Mask2Former/datasets/extended_train")
-
-register_coco_instances("train_40", {}, "/ivi/ilps/personal/rheusde/RedactedTextDetection/Redacted-Text-Detection/Mask2Former/datasets/train_40.json", "/ivi/ilps/personal/rheusde/RedactedTextDetection/Redacted-Text-Detection/Mask2Former/datasets/extended_train")
-
-register_coco_instances("train_60", {}, "/ivi/ilps/personal/rheusde/RedactedTextDetection/Redacted-Text-Detection/Mask2Former/datasets/train_60.json", "/ivi/ilps/personal/rheusde/RedactedTextDetection/Redacted-Text-Detection/Mask2Former/datasets/extended_train")
-
-register_coco_instances("train_80", {}, "/ivi/ilps/personal/rheusde/RedactedTextDetection/Redacted-Text-Detection/Mask2Former/datasets/train_80.json", "/ivi/ilps/personal/rheusde/RedactedTextDetection/Redacted-Text-Detection/Mask2Former/datasets/extended_train")
+# register datasets by importing the python file
+import register_datasets
 
 
 def build_evaluator(cfg, dataset_name, output_folder=None):
@@ -159,13 +76,14 @@ def build_evaluator(cfg, dataset_name, output_folder=None):
     if evaluator_type == "cityscapes_sem_seg":
         return CityscapesSemSegEvaluator(dataset_name)
     elif evaluator_type == "pascal_voc":
-        print("Doing pascal evaluation")
-        evaluator_list.append(COCOEvaluator(dataset_name, output_dir=output_folder))
+        return PascalVOCDetectionEvaluator(dataset_name)
     elif evaluator_type == "lvis":
         return LVISEvaluator(dataset_name, output_dir=output_folder)
     if len(evaluator_list) == 0:
         raise NotImplementedError(
-            "no Evaluator for the dataset {} with the type {}".format(dataset_name, evaluator_type)
+            "no Evaluator for the dataset {} with the type {}".format(
+                dataset_name, evaluator_type
+            )
         )
     elif len(evaluator_list) == 1:
         return evaluator_list[0]
@@ -216,7 +134,7 @@ def setup(args):
 
 def main(args):
     cfg = setup(args)
-    # Here we want to set our own output folder for the saved model and model outputs
+
     if args.eval_only:
         model = Trainer.build_model(cfg)
         DetectionCheckpointer(model, save_dir=cfg.OUTPUT_DIR).resume_or_load(
@@ -243,7 +161,7 @@ def main(args):
     return trainer.train()
 
 
-if __name__ == "__main__":
+def invoke_main() -> None:
     args = default_argument_parser().parse_args()
     print("Command Line Args:", args)
     launch(
@@ -254,3 +172,7 @@ if __name__ == "__main__":
         dist_url=args.dist_url,
         args=(args,),
     )
+
+
+if __name__ == "__main__":
+    invoke_main()  # pragma: no cover

@@ -58,14 +58,9 @@ from mask2former import (
     add_maskformer2_config,
 )
 
-# First we register our own dataset
-from detectron2.data.datasets import register_coco_instances
-register_coco_instances("classic_train", {}, "/ivi/ilps/personal/rheusde/RedactedTextDetection/Redacted-Text-Detection/Mask2Former/datasets/classic_train.json", "/ivi/ilps/personal/rheusde/RedactedTextDetection/Redacted-Text-Detection/Mask2Former/datasets/train")
-register_coco_instances("classic_test", {}, "/ivi/ilps/personal/rheusde/RedactedTextDetection/Redacted-Text-Detection/Mask2Former/datasets/classic_test.json", "/ivi/ilps/personal/rheusde/RedactedTextDetection/Redacted-Text-Detection/Mask2Former/datasets/test")
+# register the datasets
+import register_datasets
 
-# And the extended one 
-register_coco_instances("extended_train", {}, "/ivi/ilps/personal/rheusde/RedactedTextDetection/Redacted-Text-Detection/Mask2Former/datasets/extended_train.json", "/ivi/ilps/personal/rheusde/RedactedTextDetection/Redacted-Text-Detection/Mask2Former/datasets/extended_train")
-register_coco_instances("extended_test", {}, "/ivi/ilps/personal/rheusde/RedactedTextDetection/Redacted-Text-Detection/Mask2Former/datasets/extended_test.json", "/ivi/ilps/personal/rheusde/RedactedTextDetection/Redacted-Text-Detection/Mask2Former/datasets/extended_test")
 class Trainer(DefaultTrainer):
     """
     Extension of the Trainer class adapted to MaskFormer.
