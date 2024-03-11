@@ -45,7 +45,7 @@ This repository uses the [Mask2Former](https://github.com/facebookresearch/Mask2
 python mask2former_train_net.py \
 --config-file ../model_configs/mask2former_configs/maskformer2_swin_tiny_bs16_50ep.yaml \
   --num-gpus 1 SOLVER.IMS_PER_BATCH 1 SOLVER.BASE_LR 0.0001 SOLVER.MAX_ITER 5000 OUTPUT_DIR ../Mask2FormerOutput \
-  DATALOADER.FILTER_EMPTY_ANNOTATIONS False DATASETS.TRAIN '("classic_train",)'  DATASETS.TEST'("classic_test",)'
+  DATALOADER.FILTER_EMPTY_ANNOTATIONS False DATASETS.TRAIN '("classic_train",)'  DATASETS.TEST'("classic_test",)' \
 MODEL.WEIGHTS ../resources/model_binaries/pretrained/model_final_86143f.pkl
 ```
 To train the Mask RCNN folder, use the following command:
