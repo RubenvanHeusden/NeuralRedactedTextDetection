@@ -36,8 +36,20 @@ notebooks
 ## Installation
 
 The repository includes both a requirements.txt and a environment.yml file for installing the required dependencies.
-To install the required dependencies via `pip`, please run the following command:
+To install the required dependencies via `conda`, please run the following command in the root folder of the repository:
 
+```
+conda env create -f environment.yml
+```
+
+This will create the `NeuralRedactedTextDetection` environment, which you can use to run the experiments and notebooks.
+
+If you would rather install via `pip`, you can use the provided `requirements.txt` file, and install using the following command:
+
+```
+pip install -r requirements.txt
+```
+## Dependences
 This repository uses the [Mask2Former](https://github.com/facebookresearch/Mask2Former/tree/main) and [Detectron2](https://github.com/facebookresearch/detectron2) libraries from Meta for the experiments. Although the requirements file contains versions of these packages, if you want to run the Mask2Former model on your own GPU, you will have to compile the MSDeformAttn CUDA operation yourself for your own system. You can do this by following the installation instructions [here](https://github.com/facebookresearch/Mask2Former/blob/main/INSTALL.md).
 
 ## Trained models
