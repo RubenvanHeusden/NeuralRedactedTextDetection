@@ -4,6 +4,10 @@
 This repository contains the code and experiments associated with the paper "Redacted Text Detection Using Neural Image Segmentation
 Methods", currently under submission at the International Journal of Document Analysis and Recognition (IJDAR).
 
+# Introduction
+
+This repository contains the code associated with the experiments conducted in the paper, with notebooks containing the actual experiments. The `DatasetExploration` notebook is a small notebook that gives an overview of the dataset and shows some of the annotations on a sample image. The `EdactRayonScanBaseline` notebook contains an implementation of the rulebased Edact-Ray model for scanned-in images, and a short evaluation of this algorithm on our testset. The baseline based on OCR and morhpology is implemented in the `OCRandMorphologyBaseline` notebook, and the results are saved for evaluation in the `NeuralModelExperiments` notebook, where the model is compared to the Mask R-CNN and Mask2Former models trained specifically for this task.
+
 ## Directory Structure
 
 ```
