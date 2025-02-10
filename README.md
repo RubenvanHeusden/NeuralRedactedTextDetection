@@ -50,6 +50,16 @@ If you would rather install via `pip`, you can use the provided `requirements.tx
 pip install -r requirements.txt
 ```
 
+### Installation on Newer versions of MacOS
+When trying to install the required dependencies on newer versions of MacOS, you might run into problems when trying to install the detectron2 and maskformer packages, 
+with the system not being able to find the C++ headers needed for compilation.
+To solve this, you will need to install llvm via HomeBrew, and specify the path to the headers manually, using the following commands:
+```
+brew install llvm
+CC=clang CXX=clang++ ARCHFLAGS="-arch x86_64" CXXFLAGS="-isystem $(brew --prefix llvm)/include/c++/v1" python -m pip install 'git+https://github.com/facebookresearch/detectron2.git'
+```
+
+
 ## Data & Models
 The dataset is encoded in the standard COCO format, with train and test folders containing the images and a JSON file in the COCO annotation style. Please note that although the Mask2Former library works with RLE masks of the annotations, the Detectron2 library does not, and therefore we have included annotations in both formats, with instructions of how to run everything for both models. 
 
