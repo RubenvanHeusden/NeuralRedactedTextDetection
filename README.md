@@ -50,9 +50,13 @@ If you would rather install via `pip`, you can use the provided `requirements.tx
 pip install -r requirements.txt
 ```
 
+## Data & Models
+The dataset is encoded in the standard COCO format, with train and test folders containing the images and a JSON file in the COCO annotation style. Please note that although the Mask2Former library works with RLE masks of the annotations, the Detectron2 library does not, and therefore we have included annotations in both formats, with instructions of how to run everything for both models. 
+
+Both the dataset as well as the trained models and the model outputs can be downloaded through Zenodo on the following link: https://zenodo.org/records/10805206
+
 After you have installed the requirements and have downloaded the dataset and models from Zenodo, you will have to download the base models
 for the neural models, which you can do by running the `download_pretrained_models.sh` file, which will but the models in the `resources/model_binaries/pretrained` folder and convert the models from `pth` to `pkl`, as required by the libraries.
-
 
 ## Dependencies
 This repository uses the [Mask2Former](https://github.com/facebookresearch/Mask2Former/tree/main) and [Detectron2](https://github.com/facebookresearch/detectron2) libraries from Meta for the experiments. Although the requirements file contains versions of these packages, if you want to run the Mask2Former model on your own GPU, you will have to compile the MSDeformAttn CUDA operation yourself for your own system. You can do this by following the installation instructions [here](https://github.com/facebookresearch/Mask2Former/blob/main/INSTALL.md).
@@ -86,11 +90,6 @@ and test dataset:
 - classic_train, classic_test
 - extended_train, extended_test
 - train10, train20, train40, train60, train80
-
-## Data & Models
-The dataset is encoded in the standard COCO format, with train and test folders containing the images and a JSON file in the COCO annotation style. Please note that although the Mask2Former library works with RLE masks of the annotations, the Detectron2 library does not, and therefore we have included annotations in both formats, with instructions of how to run everything for both models. 
-
-Both the dataset as well as the trained models and the model outputs can be downloaded through Zenodo on the following link: https://zenodo.org/records/10805206
 
 ## Demo
 Apart from the trained models for the experiments, we have also set up a small demo in the `demo.py` file, which can be used to detect redactions for any input PDF file, and return not only a PDF with redactions marked, but also a dataframe with the redaction statistics. For this, we use the Mask R-CNN model trained on the complete dataset (train+test), and use a serialized version of the model to speed up inference.
