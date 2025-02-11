@@ -59,6 +59,11 @@ brew install llvm
 CC=clang CXX=clang++ ARCHFLAGS="-arch x86_64" CXXFLAGS="-isystem $(brew --prefix llvm)/include/c++/v1" python -m pip install 'git+https://github.com/facebookresearch/detectron2.git'
 ```
 
+### Installation Using Docker
+
+If you don't want to install the packages and dependencies manually , we have also set up a Docker that will come with these dependencies pre-installed, which should make the installation
+considerably more easy, and still allow you to run all the code and scripts in the repository. To install the docker, please run the following command:
+
 
 ## Data & Models
 The dataset is encoded in the standard COCO format, with train and test folders containing the images and a JSON file in the COCO annotation style. Please note that although the Mask2Former library works with RLE masks of the annotations, the Detectron2 library does not, and therefore we have included annotations in both formats, with instructions of how to run everything for both models. 
